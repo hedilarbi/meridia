@@ -1,0 +1,124 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "home": "Home",
+    "destinations": "Destinations",
+    "hotels": "Hotels",
+    "flights": "Flights",
+    "contact": "Contact",
+    "login": "Login",
+    "signup": "Sign Up",
+    "search": "Search",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "viewAll": "View All",
+    "perNight": "/night",
+    "from": "From",
+    "seeAll": "See all hotels",
+    "book": "View offer",
+    "see": "See"
+  },
+  "navigation": {
+    "menu": "Menu",
+    "language": "Language",
+    "currency": "Currency",
+    "assistance": "Help",
+    "myTrips": "My Trips"
+  },
+  "hero": {
+    "badge": "+2500 travelers this month",
+    "title": "Discover the world,",
+    "titleHighlight": "live the extraordinary",
+    "subtitle": "Exceptional stays in the world's most beautiful hotels. Compare offers and continue on KAYAK or with the supplier.",
+    "searchPlaceholder": "Paris, Tokyo, Bali...",
+    "where": "Where are you going?",
+    "arrival": "Check-in",
+    "departure": "Check-out",
+    "travelers": "Travelers",
+    "search": "Search"
+  },
+  "tabs": {
+    "hotels": "Hotels",
+    "flights": "Flights",
+    "cars": "Cars"
+  },
+  "categories": {
+    "title": "Travel your way",
+    "subtitle": "Choose your type of getaway and let us guide you to the perfect adventure",
+    "beach": "Dream Beaches",
+    "beachDesc": "Crystal clear waters and fine sand",
+    "adventure": "Pure Adventure",
+    "adventureDesc": "Peaks and unexplored trails",
+    "city": "City Breaks",
+    "cityDesc": "Vibrant world capitals",
+    "wellness": "Wellness",
+    "wellnessDesc": "Serenity and relaxation"
+  },
+  "inspirations": {
+    "title": "Inspirations",
+    "subtitle": "Find the experience that suits you",
+    "gastronomy": "Gastronomy",
+    "gastronomyDesc": "The best restaurants",
+    "cruises": "Cruises",
+    "cruisesDesc": "Private yacht in the Mediterranean",
+    "ecoLuxe": "Eco-Luxury",
+    "ecoLuxeDesc": "Nature and ultimate comfort",
+    "heritage": "Heritage",
+    "heritageDesc": "Places steeped in history"
+  },
+  "explore": {
+    "badge": "Trending now",
+    "title": "Explore our hotels",
+    "subtitle": "Filter and discover properties that match your desires",
+    "all": "All Hotels",
+    "france": "France",
+    "mediterranean": "Mediterranean",
+    "europe": "Europe",
+    "international": "International",
+    "searchPlaceholder": "Search for a hotel, city...",
+    "budget": "Budget per night:",
+    "hotelsFound": "hotel(s) found",
+    "noResults": "No hotels found",
+    "noResultsDesc": "Try modifying your search criteria"
+  },
+  "featured": {
+    "badge": "Premium Selection",
+    "title": "Our \"Elite\" Selection",
+    "subtitle": "Properties handpicked by our experts"
+  },
+  "destinations": {
+    "title": "Popular Destinations",
+    "subtitle": "The most popular places among our travel community"
+  },
+  "newsletter": {
+    "title": "Ready for adventure?",
+    "subtitle": "Sign up to receive our exclusive offers and secret travel guides",
+    "placeholder": "Your email",
+    "button": "Subscribe"
+  },
+  "footer": {
+    "description": "Your trusted partner for unforgettable trips since 2015.",
+    "company": "Company",
+    "about": "About",
+    "careers": "Careers",
+    "press": "Press",
+    "blog": "Blog",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "contactUs": "Contact Us",
+    "faq": "FAQ",
+    "cancellation": "Cancellation",
+    "legal": "Legal",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "licenses": "Licenses",
+    "rights": "All rights reserved",
+    "securePayments": "Secure Payments"
+  },
+  "stats": {
+    "hotels": "Partner hotels",
+    "clients": "Happy customers",
+    "support": "Customer support"
+  }
+}

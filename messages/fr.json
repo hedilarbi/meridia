@@ -1,0 +1,124 @@
+{
+  "common": {
+    "welcome": "Bienvenue",
+    "home": "Accueil",
+    "destinations": "Destinations",
+    "hotels": "Hôtels",
+    "flights": "Vols",
+    "contact": "Contact",
+    "login": "Connexion",
+    "signup": "Inscription",
+    "search": "Rechercher",
+    "learnMore": "En savoir plus",
+    "getStarted": "Commencer",
+    "viewAll": "Voir tout",
+    "perNight": "/nuit",
+    "from": "À partir de",
+    "seeAll": "Voir tous les hôtels",
+    "book": "Voir l'offre",
+    "see": "Voir"
+  },
+  "navigation": {
+    "menu": "Menu",
+    "language": "Langue",
+    "currency": "Devise",
+    "assistance": "Assistance",
+    "myTrips": "Mes voyages"
+  },
+  "hero": {
+    "badge": "+2500 voyageurs ce mois",
+    "title": "Découvrez le monde,",
+    "titleHighlight": "vivez l'extraordinaire",
+    "subtitle": "Des séjours d'exception dans les plus beaux hôtels du monde. Comparez les offres et continuez chez KAYAK ou le fournisseur.",
+    "searchPlaceholder": "Paris, Tokyo, Bali...",
+    "where": "Où allez-vous ?",
+    "arrival": "Arrivée",
+    "departure": "Départ",
+    "travelers": "Voyageurs",
+    "search": "Rechercher"
+  },
+  "tabs": {
+    "hotels": "Hôtels",
+    "flights": "Vols",
+    "cars": "Voitures"
+  },
+  "categories": {
+    "title": "Voyagez selon vos envies",
+    "subtitle": "Choisissez votre type d'escapade et laissez-nous vous guider vers l'aventure parfaite",
+    "beach": "Plages de rêve",
+    "beachDesc": "Eaux cristallines et sable fin",
+    "adventure": "Aventure pure",
+    "adventureDesc": "Sommets et sentiers inexplorés",
+    "city": "City Breaks",
+    "cityDesc": "Capitales mondiales vibrantes",
+    "wellness": "Bien-être",
+    "wellnessDesc": "Sérénité et relaxation"
+  },
+  "inspirations": {
+    "title": "Inspirations",
+    "subtitle": "Trouvez l'expérience qui vous correspond",
+    "gastronomy": "Gastronomie",
+    "gastronomyDesc": "Les meilleures tables",
+    "cruises": "Croisières",
+    "cruisesDesc": "Yacht privé en Méditerranée",
+    "ecoLuxe": "Éco-Luxe",
+    "ecoLuxeDesc": "Nature et confort ultime",
+    "heritage": "Héritage",
+    "heritageDesc": "Lieux chargés d'histoire"
+  },
+  "explore": {
+    "badge": "Tendances du moment",
+    "title": "Explorez nos hôtels",
+    "subtitle": "Filtrez et découvrez les établissements qui correspondent à vos envies",
+    "all": "Tous les Hôtels",
+    "france": "France",
+    "mediterranean": "Méditerranée",
+    "europe": "Europe",
+    "international": "International",
+    "searchPlaceholder": "Rechercher un hôtel, une ville...",
+    "budget": "Budget par nuit :",
+    "hotelsFound": "hôtel(s) trouvé(s)",
+    "noResults": "Aucun hôtel trouvé",
+    "noResultsDesc": "Essayez de modifier vos critères de recherche"
+  },
+  "featured": {
+    "badge": "Sélection Premium",
+    "title": "Notre Sélection \"Elite\"",
+    "subtitle": "Établissements triés sur le volet par nos experts"
+  },
+  "destinations": {
+    "title": "Destinations populaires",
+    "subtitle": "Les lieux les plus prisés par notre communauté de voyageurs"
+  },
+  "newsletter": {
+    "title": "Prêt pour l'aventure ?",
+    "subtitle": "Inscrivez-vous pour recevoir nos offres exclusives et nos guides de voyage secrets",
+    "placeholder": "Votre email",
+    "button": "S'inscrire"
+  },
+  "footer": {
+    "description": "Votre partenaire de confiance pour des voyages inoubliables depuis 2015.",
+    "company": "Entreprise",
+    "about": "À propos",
+    "careers": "Carrières",
+    "press": "Presse",
+    "blog": "Blog",
+    "support": "Support",
+    "helpCenter": "Centre d'aide",
+    "contactUs": "Nous contacter",
+    "faq": "FAQ",
+    "cancellation": "Annulation",
+    "legal": "Légal",
+    "terms": "Conditions",
+    "privacy": "Confidentialité",
+    "cookies": "Cookies",
+    "licenses": "Licences",
+    "rights": "Tous droits réservés",
+    "securePayments": "Paiements sécurisés"
+  },
+  "stats": {
+    "hotels": "Hôtels partenaires",
+    "clients": "Clients satisfaits",
+    "support": "Support client"
+  }
+}

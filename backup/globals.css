@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* --- BARRE DE PROGRESSION NPROGRESS --- */
+#nprogress .bar {
+  background: #003580 !important; /* Bleu Expedia */
+  height: 3px !important;
+  z-index: 9999 !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #003580, 0 0 5px #003580 !important;
+}
+
+/* --- ANIMATION SKELETON (PULSE) --- */
+.placeholder {
+  animation: pulse 1.5s infinite ease-in-out;
+  background-color: #e9ecef !important;
+  display: inline-block;
+  min-height: 1em;
+  vertical-align: middle;
+  cursor: wait;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* --- EFFETS DE SURVOL (HOVER) --- */
+.shadow-hover {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.shadow-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.transition {
+  transition: all 0.3s ease;
+}
+
+/* Utile pour les bannières sombres */
+.bg-gradient-dark {
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+.border-light { border-color: #f1f1f1 !important; }
+
+/* --- SEARCH TABS & POPUP STYLES --- */
+.search-tabs button { background: transparent; border: 0; padding: 0.25rem 0.75rem; display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
+.search-tabs button img { width: 36px; height: 36px; display: block; margin: 0 auto; transition: transform .18s ease, filter .18s ease, opacity .18s ease; filter: grayscale(100%) opacity(.6); }
+.search-tabs button:hover img { filter: grayscale(60%) opacity(.9); transform: translateY(-2px) scale(1.04); }
+.search-tabs button.active img { filter: none; opacity: 1; transform: translateY(-3px) scale(1.08); }
+.search-tabs button span { display:block; font-size: .78rem; }
+.search-tabs button.active span { font-weight: 600; color: var(--exp-blue, #003580); }
+
+/* Date / Calendar tweaks */
+.react-datepicker { box-shadow: 0 16px 40px rgba(16,24,40,0.12); border-radius: 12px; }
+.react-datepicker__month { padding: 1rem 1.25rem; }
+.react-datepicker__day { width: 40px; height: 40px; line-height: 40px; border-radius: 9999px; margin: 0.25rem; transition: transform .12s ease, background .12s ease, color .12s ease; }
+.react-datepicker__day:hover { transform: translateY(-3px); background: rgba(0,53,128,0.06); }
+.react-datepicker__day--selected { background: #003580 !important; color: #fff !important; box-shadow: 0 8px 18px rgba(0,53,128,0.12); }
+.react-datepicker__day--in-range { background: rgba(0,53,128,0.09) !important; color: #003580 !important; }
+.react-datepicker__day--selected:focus { outline: none; }
+.react-datepicker__navigation { top: 8px; }
+
+/* make the months grid tighter and centered */
+.react-datepicker__month-container { display: inline-block; }
+.react-datepicker__month { display: inline-block; vertical-align: top; }
+
+/* Chips active style already in component, add subtle focus */
+.btn-chips { transition: transform .12s ease; }
+.btn-chips:active { transform: translateY(1px); }
+
+/* Date popover */
+.react-datepicker { box-shadow: 0 10px 30px rgba(0,0,0,0.12); border-radius: 12px; }
+.react-datepicker__month { padding: 1rem; }
+.react-datepicker__day--selected, .react-datepicker__day--in-range { background-color: #003580 !important; color: white !important; }
+
+/* Suggestion dropdown */
+.suggestions-panel { max-height: 300px; overflow: auto; }
+.suggestions-panel button { width: 100%; text-align: left; padding: 0.5rem; border-radius: 8px; }
+.suggestions-panel button:hover { background: #f8fafc; }
+
+/* Traveler popup improvements */
+.traveler-popup { min-width: 320px !important; border-radius: 12px !important; }
+.traveler-popup .rounded-full { border: 1px solid #e6e6e6; }
+
+@media (max-width: 768px) {
+  .traveler-popup { position: fixed !important; bottom: 0; left: 0 !important; right: 0 !important; top: auto !important; width: 100% !important; border-radius: 20px 20px 0 0 !important; padding: 2rem !important; }
+}
