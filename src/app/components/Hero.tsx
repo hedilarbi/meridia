@@ -108,7 +108,7 @@ export default function Hero({ onSectionChange }: HeroProps) {
                     <div className="flex items-center gap-2">
                       <DatePicker
                         selected={startDate}
-                        onChange={(date) => setStartDate(date)}
+                        onChange={(date: Date | null) => setStartDate(date)}
                         selectsStart
                         startDate={startDate}
                         endDate={endDate}
@@ -119,11 +119,11 @@ export default function Hero({ onSectionChange }: HeroProps) {
                       <span className="text-slate-300">—</span>
                       <DatePicker
                         selected={endDate}
-                        onChange={(date) => setEndDate(date)}
+                        onChange={(date: Date | null) => setEndDate(date)}
                         selectsEnd
                         startDate={startDate}
                         endDate={endDate}
-                        minDate={startDate}
+                        minDate={startDate ?? undefined}
                         placeholderText="Départ"
                         className="w-20 text-slate-900 font-semibold placeholder:text-slate-400 text-sm bg-transparent"
                         dateFormat="dd MMM"

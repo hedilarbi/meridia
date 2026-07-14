@@ -1,119 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useTranslations } from 'next-intl';
 import { useCurrency } from '@/contexts/CurrencyContext';
-
-// ============================================
-// DONNÉES HÔTELS FILTRABLES
-// ============================================
-
-interface FilterableHotel {
-  id: string;
-  name: string;
-  city: string;
-  country: string;
-  region: 'france' | 'mediterranean' | 'europe' | 'international';
-  price: number;
-  rating: number;
-  image: string;
-  amenities: string[];
-  category: string;
-}
-
-const FILTERABLE_HOTELS: FilterableHotel[] = [
-  {
-    id: 'f1', name: 'Le Bristol Paris', city: 'Paris', country: 'France', region: 'france',
-    price: 850, rating: 9.7, category: 'Palace',
-    image: 'https://images.unsplash.com/photo-1606402179428-a57976d71fa4?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Spa', 'Piscine', 'Restaurant étoilé', 'Concierge']
-  },
-  {
-    id: 'f2', name: 'Hôtel du Cap-Eden-Roc', city: 'Antibes', country: 'France', region: 'france',
-    price: 1200, rating: 9.9, category: 'Luxe',
-    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Plage privée', 'Piscine', 'Tennis', 'Spa']
-  },
-  {
-    id: 'f3', name: 'Belmond Hotel Caruso', city: 'Ravello', country: 'Italie', region: 'mediterranean',
-    price: 720, rating: 9.6, category: 'Romantique',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Vue mer', 'Piscine à débordement', 'Jardin', 'Restaurant']
-  },
-  {
-    id: 'f4', name: 'Mystique Santorini', city: 'Santorin', country: 'Grèce', region: 'mediterranean',
-    price: 580, rating: 9.5, category: 'Boutique',
-    image: 'https://images.unsplash.com/photo-1570213489059-0aac6626cade?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Vue caldera', 'Piscine', 'Spa', 'Restaurant']
-  },
-  {
-    id: 'f5', name: 'The Ritz London', city: 'Londres', country: 'Royaume-Uni', region: 'europe',
-    price: 690, rating: 9.4, category: 'Palace',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Restaurant étoilé', 'Spa', 'Bar', 'Concierge']
-  },
-  {
-    id: 'f6', name: 'Hotel Kämp', city: 'Helsinki', country: 'Finlande', region: 'europe',
-    price: 320, rating: 9.2, category: 'Design',
-    image: 'https://images.unsplash.com/photo-1551882547-ff43c61f3c33?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Spa', 'Restaurant', 'Bar', 'Fitness']
-  },
-  {
-    id: 'f7', name: 'Aman Tokyo', city: 'Tokyo', country: 'Japon', region: 'international',
-    price: 950, rating: 9.8, category: 'Ultra-Luxe',
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Spa', 'Piscine', 'Restaurant', 'Vue panoramique']
-  },
-  {
-    id: 'f8', name: 'Four Seasons Bali', city: 'Bali', country: 'Indonésie', region: 'international',
-    price: 480, rating: 9.6, category: 'Resort',
-    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=800',
-    amenities: ['Plage', 'Spa', 'Yoga', 'Restaurant']
-  },
-];
-
-const FEATURED_HOTELS = [
-  {
-    id: '1', name: 'Villa Roches Rouges', location: 'Saint-Raphaël, France', price: 320, rating: 9.5,
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800',
-    description: 'Icône du design face à la mer, entre pins et roches rouges.',
-    tags: ['Bord de mer', 'Design'], badge: { text: 'Coup de cœur', color: 'bg-rose-500' }
-  },
-  {
-    id: '2', name: 'Amanzoe Resort', location: 'Porto Heli, Grèce', price: 890, rating: 9.8,
-    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=800',
-    description: 'Sanctuaire grec avec vues à 360° sur le Péloponnèse.',
-    tags: ['Ultra-Luxe', 'Piscine privée'], badge: { text: 'Exclusif', color: 'bg-amber-500' }
-  },
-  {
-    id: '3', name: 'Castello di Reschio', location: 'Ombrie, Italie', price: 650, rating: 9.7,
-    image: 'https://images.unsplash.com/photo-1551882547-ff43c61f3c33?auto=format&fit=crop&q=80&w=800',
-    description: 'Château millénaire restauré dans les collines toscanes.',
-    tags: ['Historique', 'Nature'], badge: { text: 'Patrimoine', color: 'bg-emerald-500' }
-  },
-  {
-    id: '4', name: 'Mandarin Oriental', location: 'Paris, France', price: 780, rating: 9.6,
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=800',
-    description: 'Élégance parisienne au cœur de la Rue Saint-Honoré.',
-    tags: ['Palace', 'Spa'], badge: { text: 'Palace', color: 'bg-sky-500' }
-  },
-  {
-    id: '5', name: 'Aman Tokyo', location: 'Tokyo, Japon', price: 950, rating: 9.9,
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=800',
-    description: 'Minimalisme japonais au sommet de la ville.',
-    tags: ['Design', 'Vue panoramique'], badge: { text: 'Top 10 Mondial', color: 'bg-violet-500' }
-  },
-  {
-    id: '6', name: 'Les Roches Blanches', location: 'Cassis, France', price: 420, rating: 9.4,
-    image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&q=80&w=800',
-    description: 'Art déco surplombant les calanques de Cassis.',
-    tags: ['Vue mer', 'Restaurant étoilé'], badge: { text: 'Éco-label', color: 'bg-teal-500' }
-  },
-];
+import {
+  SELECTED_HOTEL_STORAGE_KEY,
+  type HomeHotel,
+  type HomeHotelsApiPayload,
+  type HotelSearchContext,
+  type StoredSelectedHotel,
+} from '@/types/hotels';
 
 const DESTINATIONS = [
   { name: 'Santorin', country: 'Grèce', price: 690, image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&q=80&w=800' },
@@ -138,22 +38,90 @@ export default function Home() {
   const [showTravelers, setShowTravelers] = useState(false);
   const [travelers, setTravelers] = useState({ adults: 2, children: 0, rooms: 1 });
 
-  // États pour le filtre dynamique
-  const [hotels] = useState<FilterableHotel[]>(FILTERABLE_HOTELS);
+  // Hôtels KAYAK pour les sections "Explorez" et "Sélection Elite"
+  const [hotels, setHotels] = useState<HomeHotel[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1500]);
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isActive = true;
+
+    async function fetchHomeHotels() {
+      try {
+        const response = await fetch('/api/hotels/home');
+        const payload = response.ok ? ((await response.json()) as HomeHotelsApiPayload) : null;
+
+        if (isActive) {
+          setHotels(payload?.hotels ?? []);
+        }
+      } catch {
+        if (isActive) {
+          setHotels([]);
+        }
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void fetchHomeHotels();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   // Filtrage des hôtels
   const filteredHotels = hotels.filter(hotel => {
     const matchesRegion = selectedRegion === 'all' || hotel.region === selectedRegion;
     const matchesSearch = hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           hotel.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          hotel.country.toLowerCase().includes(searchQuery.toLowerCase());
+                          hotel.destinationCountry.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesPrice = hotel.price >= priceRange[0] && hotel.price <= priceRange[1];
     return matchesRegion && matchesSearch && matchesPrice;
   });
+
+  const featuredHotels = useMemo(
+    () => [...hotels].sort((a, b) => b.rate - a.rate).slice(0, 6),
+    [hotels],
+  );
+
+  const goToHotel = (hotel: HomeHotel) => {
+    const searchContext: HotelSearchContext = {
+      city: hotel.searchQuery,
+      checkin: hotel.checkin,
+      checkout: hotel.checkout,
+      adults: 2,
+      currencyCode: 'EUR',
+      languageCode: 'fr',
+      pageIndex: 0,
+    };
+
+    try {
+      const payload: StoredSelectedHotel = { hotel, searchContext, storedAt: Date.now() };
+      sessionStorage.setItem(SELECTED_HOTEL_STORAGE_KEY, JSON.stringify(payload));
+    } catch {
+      // La fiche hôtel pourra retenter une recherche via l'URL.
+    }
+
+    const params = new URLSearchParams({
+      city: searchContext.city,
+      checkin: searchContext.checkin,
+      checkout: searchContext.checkout,
+      adults: String(searchContext.adults),
+      currencyCode: searchContext.currencyCode,
+      languageCode: searchContext.languageCode,
+    });
+
+    if (hotel.kayakKey) {
+      params.set('kayakKey', hotel.kayakKey);
+    }
+
+    router.push(`/hotels/${encodeURIComponent(String(hotel.id))}?${params.toString()}`);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -569,84 +537,93 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-              {filteredHotels.map((hotel) => (
-                <div
-                  key={hotel.id}
-                  onClick={() => router.push(`/hotels/${hotel.id}`)}
-                  className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:shadow-slate-300/50 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
-                >
-                  {/* Image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={hotel.image}
-                      alt={hotel.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    {/* Rating */}
-                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-lg">
-                      <i className="fa-solid fa-star text-amber-400 text-xs"></i>
-                      <span className="font-bold text-slate-800 text-sm">{hotel.rating}</span>
-                    </div>
-                    {/* Category Badge */}
-                    <div className="absolute top-3 right-3 bg-linear-to-r from-slate-800 to-slate-900 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-lg">
-                      {hotel.category}
-                    </div>
-                    {/* Price Tag */}
-                    <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-lg">
-                      <span className="text-lg font-black text-slate-800">{formatPrice(hotel.price)}</span>
-                      <span className="text-slate-500 text-xs font-medium">{t('common.perNight')}</span>
-                    </div>
-                  </div>
+              {filteredHotels.map((hotel) => {
+                const facts = [
+                  hotel.numberOfReviews ? `${hotel.numberOfReviews} avis` : null,
+                  hotel.numberOfProviders ? `${hotel.numberOfProviders} fournisseurs` : null,
+                  hotel.isGreatValue ? 'Bon rapport qualité/prix' : null,
+                ].filter((fact): fact is string => Boolean(fact));
 
-                  {/* Content */}
-                  <div className="p-4">
-                    {/* Location */}
-                    <div className="flex items-center gap-1.5 text-sky-500 text-xs font-semibold mb-2">
-                      <i className="fa-solid fa-location-dot"></i>
-                      <span>{hotel.city}, {hotel.country}</span>
-                    </div>
-
-                    {/* Name */}
-                    <h3 className="text-base font-bold text-slate-800 mb-3 group-hover:text-sky-600 transition-colors line-clamp-1">
-                      {hotel.name}
-                    </h3>
-
-                    {/* Amenities */}
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      {hotel.amenities.slice(0, 3).map((amenity, i) => (
-                        <span
-                          key={i}
-                          className="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                        >
-                          {amenity}
-                        </span>
-                      ))}
-                      {hotel.amenities.length > 3 && (
-                        <span className="bg-sky-100 text-sky-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">
-                          +{hotel.amenities.length - 3}
-                        </span>
+                return (
+                  <div
+                    key={hotel.id}
+                    onClick={() => goToHotel(hotel)}
+                    className="group bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:shadow-slate-300/50 transition-all duration-500 hover:-translate-y-2 cursor-pointer"
+                  >
+                    {/* Image */}
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={hotel.image}
+                        alt={hotel.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      {/* Rating */}
+                      {hotel.rate > 0 && (
+                        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-lg">
+                          <i className="fa-solid fa-star text-amber-400 text-xs"></i>
+                          <span className="font-bold text-slate-800 text-sm">{hotel.rate}</span>
+                        </div>
                       )}
+                      {/* Stars Badge */}
+                      {hotel.stars && (
+                        <div className="absolute top-3 right-3 bg-linear-to-r from-slate-800 to-slate-900 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-lg">
+                          {hotel.stars} étoiles
+                        </div>
+                      )}
+                      {/* Price Tag */}
+                      <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-lg">
+                        <span className="text-lg font-black text-slate-800">{formatPrice(hotel.price)}</span>
+                        <span className="text-slate-500 text-xs font-medium">{t('common.perNight')}</span>
+                      </div>
                     </div>
 
-                    {/* CTA */}
-                    <div className="flex items-center justify-between pt-3 border-t border-slate-100">
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <i
-                            key={i}
-                            className={`fa-solid fa-star text-xs ${
-                              i < Math.floor(hotel.rating / 2) ? 'text-amber-400' : 'text-slate-200'
-                            }`}
-                          ></i>
-                        ))}
+                    {/* Content */}
+                    <div className="p-4">
+                      {/* Location */}
+                      <div className="flex items-center gap-1.5 text-sky-500 text-xs font-semibold mb-2">
+                        <i className="fa-solid fa-location-dot"></i>
+                        <span>{hotel.city}, {hotel.destinationCountry}</span>
                       </div>
-                      <span className="text-sky-500 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                        {t('common.see')} <i className="fa-solid fa-arrow-right text-xs"></i>
-                      </span>
+
+                      {/* Name */}
+                      <h3 className="text-base font-bold text-slate-800 mb-3 group-hover:text-sky-600 transition-colors line-clamp-1">
+                        {hotel.name}
+                      </h3>
+
+                      {/* Facts */}
+                      {facts.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          {facts.slice(0, 3).map((fact, i) => (
+                            <span
+                              key={i}
+                              className="bg-slate-100 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                            >
+                              {fact}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* CTA */}
+                      <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <i
+                              key={i}
+                              className={`fa-solid fa-star text-xs ${
+                                i < (hotel.stars ?? 0) ? 'text-amber-400' : 'text-slate-200'
+                              }`}
+                            ></i>
+                          ))}
+                        </div>
+                        <span className="text-sky-500 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                          {t('common.see')} <i className="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
 
@@ -687,71 +664,93 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {FEATURED_HOTELS.map((hotel) => (
-              <div
-                key={hotel.id}
-                className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-2"
-              >
-                {/* Image */}
-                <div className="relative h-56 sm:h-64 overflow-hidden">
-                  <img
-                    src={hotel.image}
-                    alt={hotel.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  {/* Badge */}
-                  <div className={`absolute top-4 left-4 ${hotel.badge.color} text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg`}>
-                    {hotel.badge.text}
-                  </div>
-                  {/* Rating */}
-                  <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
-                    <i className="fa-solid fa-star text-amber-400 text-sm"></i>
-                    <span className="font-bold text-slate-800">{hotel.rating}</span>
-                  </div>
-                  {/* Favorite */}
-                  <button className="absolute bottom-4 right-4 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-400 hover:text-rose-500 transition-colors shadow-lg">
-                    <i className="fa-regular fa-heart"></i>
-                  </button>
-                </div>
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="w-12 h-12 border-4 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {featuredHotels.map((hotel) => {
+                const tags = [
+                  hotel.stars ? `${hotel.stars} étoiles` : null,
+                  hotel.isGreatValue ? 'Bon rapport qualité/prix' : null,
+                  hotel.destinationLabel,
+                ].filter((tag): tag is string => Boolean(tag));
 
-                {/* Content */}
-                <div className="p-5 sm:p-6">
-                  <div className="flex items-center gap-2 text-sky-500 text-xs font-bold uppercase tracking-wider mb-2">
-                    <i className="fa-solid fa-location-dot"></i>
-                    <span>{hotel.location}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors">
-                    {hotel.name}
-                  </h3>
-                  <p className="text-slate-500 text-sm mb-4 line-clamp-2">{hotel.description}</p>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {hotel.tags.map((tag, i) => (
-                      <span key={i} className="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                    <div>
-                      <span className="text-2xl font-black text-slate-800">{formatPrice(hotel.price)}</span>
-                      <span className="text-slate-400 text-sm font-medium"> {t('common.perNight')}</span>
+                return (
+                  <div
+                    key={hotel.id}
+                    className="group bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-100 hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-2"
+                  >
+                    {/* Image */}
+                    <div className="relative h-56 sm:h-64 overflow-hidden">
+                      <img
+                        src={hotel.image}
+                        alt={hotel.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      {/* Badge */}
+                      {hotel.isGreatValue && (
+                        <div className="absolute top-4 left-4 bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg">
+                          Bon rapport qualité/prix
+                        </div>
+                      )}
+                      {/* Rating */}
+                      {hotel.rate > 0 && (
+                        <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg">
+                          <i className="fa-solid fa-star text-amber-400 text-sm"></i>
+                          <span className="font-bold text-slate-800">{hotel.rate}</span>
+                        </div>
+                      )}
+                      {/* Favorite */}
+                      <button className="absolute bottom-4 right-4 w-10 h-10 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center text-slate-400 hover:text-rose-500 transition-colors shadow-lg">
+                        <i className="fa-regular fa-heart"></i>
+                      </button>
                     </div>
-                    <Link
-                      href={`/hotels/${hotel.id}`}
-                      className="text-sky-500 font-bold flex items-center gap-2 hover:gap-3 transition-all"
-                    >
-                      Voir l&apos;offre <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
+
+                    {/* Content */}
+                    <div className="p-5 sm:p-6">
+                      <div className="flex items-center gap-2 text-sky-500 text-xs font-bold uppercase tracking-wider mb-2">
+                        <i className="fa-solid fa-location-dot"></i>
+                        <span>{hotel.city}, {hotel.destinationCountry}</span>
+                      </div>
+                      <h3 className="text-xl font-bold text-slate-800 mb-2 group-hover:text-sky-600 transition-colors">
+                        {hotel.name}
+                      </h3>
+                      <p className="text-slate-500 text-sm mb-4">
+                        {hotel.numberOfReviews ? `${hotel.numberOfReviews} avis vérifiés` : 'Avis vérifiés à venir'}
+                        {hotel.numberOfProviders ? ` · ${hotel.numberOfProviders} fournisseurs comparés` : ''}
+                      </p>
+
+                      {/* Tags */}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {tags.map((tag, i) => (
+                          <span key={i} className="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                        <div>
+                          <span className="text-2xl font-black text-slate-800">{formatPrice(hotel.price)}</span>
+                          <span className="text-slate-400 text-sm font-medium"> {t('common.perNight')}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => goToHotel(hotel)}
+                          className="text-sky-500 font-bold flex items-center gap-2 hover:gap-3 transition-all"
+                        >
+                          Voir l&apos;offre <i className="fa-solid fa-arrow-right"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 

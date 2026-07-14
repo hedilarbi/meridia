@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-@import "tailwindcss";
+/* Preflight intentionally omitted so Tailwind's base reset doesn't fight Bootstrap's */
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
 
 /* Bootstrap compatibility - keep bootstrap for existing components */
 @import 'bootstrap/dist/css/bootstrap.min.css';

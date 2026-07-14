@@ -54,10 +54,6 @@ const config: Config = {
     },
   },
   plugins: [],
-  // Important: cette option permet à Tailwind de coexister avec Bootstrap
-  corePlugins: {
-    preflight: false, // Désactive les styles de base Tailwind pour éviter les conflits avec Bootstrap
-  },
 };
 
 export default config;

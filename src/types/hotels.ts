@@ -81,3 +81,18 @@ export interface HotelOffer {
 export interface HotelOffersApiPayload {
   offers: HotelOffer[];
 }
+
+export type HomeRegion = 'france' | 'mediterranean' | 'europe' | 'international';
+
+export interface HomeHotel extends HotelSummary {
+  region: HomeRegion;
+  destinationLabel: string;
+  destinationCountry: string;
+  searchQuery: string;
+  checkin: string;
+  checkout: string;
+}
+
+export interface HomeHotelsApiPayload {
+  hotels: HomeHotel[];
+}
